@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MBTI Types Library</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #FBE8CE;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .navbar {
+            background: white;
+            width: 100%;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+            .navbar a {
+                text-decoration: none;
+                color: #666;
+                font-weight: bold;
+                font-size: 15px;
+                transition: 0.3s;
+                padding: 8px 15px;
+                border-radius: 5px;
+            }
+
+                .navbar a:hover {
+                    color: #9AB17A;
+                    background: #E4DFB5;
+                    border-radius: 5px;
+                }
+
+                .navbar a.active {
+                    color: #9AB17A;
+                    border-bottom: 2px solid #9AB17A;
+                    border-radius: 5px;
+                }
+
+        .container {
+            max-width: 1100px;
+            width: 90%;
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 32px;
+        }
+
+        .types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            width: 100%;
+            height: 150px;
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            position: #9AB17A;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .flip-card-front {
+            background-color: white;
+            border-top: 5px solid #9AB17A;
+        }
+
+        .flip-card-back {
+            background-color: #9AB17A;
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .type-name {
+            font-size: 28px;
+            font-weight: 900;
+            color: #9AB17A;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .type-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+            text-transform: uppercase;
+        }
+
+        .back-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            padding-bottom: 5px;
+        }
+
+        .type-desc {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/">Take the Test</a>
+        <a href="/mbti-types" class="active">MBTI Library</a>
+    </nav>
+
+    <div class="container">
+        <h2>The 16 Personality Types</h2>
+
+        <div class="types-grid">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">INTJ</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Architect</span>
+                        <p class="type-desc">Imaginative and strategic thinkers, with a plan for everything.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">INTP</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Logician</span>
+                        <p class="type-desc">Innovative inventors with an unquenchable thirst for knowledge.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">ENTJ</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Commander</span>
+                        <p class="type-desc">Bold, imaginative and strong-willed leaders, always finding a way.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">ENTP</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Debater</span>
+                        <p class="type-desc">Smart and curious thinkers who cannot resist an intellectual challenge.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">INFJ</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Advocate</span>
+                        <p class="type-desc">Quiet and mystical, yet very inspiring and tireless idealists.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">INFP</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Mediator</span>
+                        <p class="type-desc">Poetic, kind and altruistic people, always eager to help a good cause.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">ENFJ</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Protagonist</span>
+                        <p class="type-desc">Charismatic and inspiring leaders, able to mesmerize their listeners.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">ENFP</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Campaigner</span>
+                        <p class="type-desc">Enthusiastic, creative and sociable free spirits.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">ISTJ</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Logistician</span>
+                        <p class="type-desc">Practical and fact-minded individuals, whose reliability cannot be doubted.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">ISFJ</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Defender</span>
+                        <p class="type-desc">Very dedicated and warm protectors, always ready to defend their loved ones.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">ESTJ</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Executive</span>
+                        <p class="type-desc">Excellent administrators, unsurpassed at managing things – or people.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">ESFJ</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Consul</span>
+                        <p class="type-desc">Extraordinarily caring, social and popular people, always eager to help.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">ISTP</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Virtuoso</span>
+                        <p class="type-desc">Bold and practical experimenters, masters of all kinds of tools.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">ISFP</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Adventurer</span>
+                        <p class="type-desc">Flexible and charming artists, always ready to explore new experiences.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">ESTP</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Entrepreneur</span>
+                        <p class="type-desc">Smart, energetic and perceptive people who enjoy living on the edge.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="type-name">ESFP</span>
+                    </div>
+                    <div class="flip-card-back">
+                        <span class="back-title">Entertainer</span>
+                        <p class="type-desc">Spontaneous, energetic and enthusiastic people – life is never boring.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
