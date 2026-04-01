@@ -1,4 +1,3 @@
-# NOTE: Run backend.py to start the server.
 
 ## Project Overview
 
