@@ -1,5 +1,15 @@
 from flask import Flask, render_template, request
 import joblib
+import re
+
+def clean_text(text):
+    # remove URLs
+    text = re.sub(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', ' ', text)
+    # remove specific formatting marks like |||
+    text = text.replace('|||', ' ')
+    # remove extra whitespaces
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text
 
 app = Flask(__name__)
 
@@ -25,8 +35,11 @@ def predict():
     display_text = " ".join(unique_traits)
     combined_text = " ".join(user_responses)
     
+    # Clean the input text identically to how the model was trained
+    cleaned_input = clean_text(combined_text)
+    
     try:
-        prediction = model.predict([combined_text])[0]
+        prediction = model.predict([cleaned_input])[0]
     except Exception as e:
         prediction = "Error"
     
