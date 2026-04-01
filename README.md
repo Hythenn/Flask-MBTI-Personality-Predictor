@@ -1,3 +1,5 @@
+# NOTE: Run backend.py to start the server.
+
 ## Project Overview
 
 Linguistic analysis tool developed as a Lab Exercise to categorize text into Myers-Briggs personality types.

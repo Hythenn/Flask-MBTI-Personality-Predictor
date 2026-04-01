@@ -2,213 +2,377 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MBTI Personality Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #FBE8CE;
-            padding-top: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            font-family: 'Inter', sans-serif;
+            background: #111111;
+            background-image: radial-gradient(ellipse at 50% 0%, rgba(232,160,32,0.08) 0%, transparent 65%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding-top: 70px;
         }
 
+        /* ── Navbar ── */
         .navbar {
-            background: white;
-            width: 100%;
-            padding: 15px 0;
             position: fixed;
-            top: 0;
-            left: 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            top: 0; left: 0; right: 0;
             z-index: 1000;
             display: flex;
-            justify-content: center;
-            gap: 30px;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            height: 64px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
 
-            .navbar a {
-                text-decoration: none;
-                color: #666;
-                font-weight: bold;
-                font-size: 15px;
-                transition: 0.3s;
-                padding: 8px 15px;
-                border-radius: 5px;
-            }
-
-                .navbar a:hover {
-                    color: #9AB17A;
-                    background: #E4DFB5;
-                    border-radius: 5px;
-                }
-
-                .navbar a.active {
-                    color: #9AB17A;
-                    border-bottom: 2px solid #9AB17A;
-                    border-radius: 5px;
-                }
-
-        .container {
-            background: white;
-            padding: 35px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            max-width: 800px;
-            width: 100%;
-            margin-bottom: 40px;
+        .navbar .brand {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #E8A020;
+            text-decoration: none;
         }
 
-        .result-card {
-            background: #9AB17A;
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
+        .navbar .nav-links { display: flex; gap: 8px; }
+
+        .navbar a.nav-link {
+            text-decoration: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 18px;
+            border-radius: 8px;
+            transition: all 0.25s;
+        }
+
+        .navbar a.nav-link:hover {
+            background: rgba(232,160,32,0.15);
+            color: #E8A020;
+        }
+
+        .navbar a.nav-link.active {
+            background: rgba(232,160,32,0.2);
+            color: #E8A020;
+        }
+
+        /* ── Hero ── */
+        .hero {
             text-align: center;
-            width: 100%;
-            max-width: 800px;
+            padding: 60px 20px 40px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(232,160,32,0.15);
+            border: 1px solid rgba(232,160,32,0.3);
+            color: #E8A020;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 100px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.2);
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 6vw, 56px);
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.1;
+            margin-bottom: 14px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(90deg, #E8A020, #f5c842);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: rgba(255,255,255,0.5);
+            font-size: 16px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* ── Progress Bar ── */
+        .progress-wrap {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            padding: 0 20px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #E8A020, #f5c842);
+            border-radius: 100px;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* ── Result Card ── */
+        .result-card {
+            max-width: 700px;
+            width: calc(100% - 40px);
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #c27a10, #E8A020);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(232,160,32,0.35);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 200px; height: 200px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 50%;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.85); opacity: 0; }
+            to   { transform: scale(1);    opacity: 1; }
+        }
+
+        .result-card .label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 12px;
         }
 
         .mbti-code {
-            font-size: 60px;
+            font-size: 72px;
             font-weight: 900;
-            letter-spacing: 4px;
-            margin: 0;
+            color: #fff;
+            letter-spacing: 6px;
+            line-height: 1;
+            margin-bottom: 16px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
+
+        .trait-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 18px; }
 
         .tag {
-            background: #E4DFB5;
-            color: #666;
-            padding: 4px 8px;
-            border-radius: 4px;
-            margin: 3px;
-            display: inline-block;
-            font-weight: bold;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            padding: 5px 14px;
+            border-radius: 100px;
             font-size: 12px;
-        }
-
-        h2 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 5px;
-        }
-
-        .intro-text {
-            text-align: center;
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 40px;
-        }
-
-        .question-block {
-            margin-bottom: 50px;
-            padding-bottom: 30px;
-            border-bottom: 1px solid #eee;
-            text-align: center;
-        }
-
-        p.question-text {
             font-weight: 600;
-            color: #444;
-            margin-bottom: 15px;
-            font-size: 18px;
-            line-height: 1.4;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255,255,255,0.2);
         }
 
-        .slider-container {
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-            position: relative;
+        .retake-link {
+            display: inline-block;
+            margin-top: 24px;
+            color: rgba(255,255,255,0.7);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 8px 20px;
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 8px;
+            transition: all 0.25s;
+        }
+
+        .retake-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        /* ── Form Card ── */
+        .form-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 40px 36px;
+            max-width: 700px;
+            width: calc(100% - 40px);
+            margin: 0 auto 60px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* ── Question Block ── */
+        .question-block {
+            margin-bottom: 42px;
+            padding-bottom: 38px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .question-block:last-of-type { border-bottom: none; }
+
+        .question-number {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #E8A020;
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            font-size: 17px;
+            font-weight: 600;
+            color: #f0f0f0;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        /* ── Slider ── */
+        .slider-container { position: relative; }
+
+        .current-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #E8A020, #f5c842);
+            color: #111;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 3px 12px;
+            border-radius: 100px;
+            margin-bottom: 14px;
+            min-width: 100px;
+            text-align: center;
         }
 
         .mbti-slider {
             -webkit-appearance: none;
+            appearance: none;
             width: 100%;
-            height: 8px;
-            border-radius: 5px;
-            background: #E4DFB5;
+            height: 6px;
+            border-radius: 100px;
+            background: rgba(255,255,255,0.1);
             outline: none;
-            margin: 25px 0;
+            cursor: pointer;
         }
 
-            .mbti-slider::-webkit-slider-thumb {
-                -webkit-appearance: none;
-                appearance: none;
-                width: 24px;
-                height: 24px;
-                border-radius: 50%;
-                background: #9AB17A;
-                cursor: pointer;
-                border: 3px solid white;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            }
+        .mbti-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #E8A020, #f5c842);
+            cursor: pointer;
+            border: 3px solid #111111;
+            box-shadow: 0 2px 10px rgba(232,160,32,0.5);
+            transition: transform 0.15s;
+        }
+
+        .mbti-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
 
         .slider-labels {
             display: flex;
             justify-content: space-between;
             font-size: 11px;
-            color: #aaa;
-            font-weight: bold;
+            color: rgba(255,255,255,0.3);
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
+            margin-top: 10px;
         }
 
-        .current-selection {
-            font-size: 14px;
-            color: #9AB17A;
-            font-weight: bold;
-            margin-top: -10px;
-            display: block;
-            height: 20px;
-        }
-
-        button {
-            background: #9AB17A;
-            color: white;
-            border: none;
-            padding: 18px 20px;
-            border-radius: 10px;
-            cursor: pointer;
+        /* ── Submit Button ── */
+        .submit-btn {
             width: 100%;
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 30px;
-            transition: 0.2s;
+            padding: 18px;
+            background: linear-gradient(135deg, #E8A020, #f5c842);
+            color: #111;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.25s;
+            box-shadow: 0 8px 25px rgba(232,160,32,0.3);
         }
 
-            button:hover {
-                background: #C3CC9B;
-                transform: translateY(-2px);
-            }
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 35px rgba(232,160,32,0.45);
+        }
+
+        .submit-btn:active { transform: translateY(0); }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <a href="/" class="active">Take the Test</a>
-        <a href="/mbti-types">MBTI Library</a>
+        <a href="/" class="brand">MBTI</a>
+        <div class="nav-links">
+            <a href="/" class="nav-link active">Take the Test</a>
+            <a href="/mbti-types" class="nav-link">MBTI Library</a>
+        </div>
     </nav>
+
+    <div class="hero">
+        <h1>Discover Your<br><span>Personality Type</span></h1>
+        <p>Answer 30 questions and our machine learning model will reveal your MBTI type.</p>
+    </div>
 
     {% if prediction %}
     <div class="result-card">
-        <p style="margin: 0; text-transform: uppercase; font-size: 12px; letter-spacing: 2px;">Your Predicted Type</p>
-        <h1 class="mbti-code">{{ prediction }}</h1>
-        <div style="margin-top: 20px;">
+        <p class="label">Your Predicted Type</p>
+        <p class="mbti-code">{{ prediction }}</p>
+        <p style="color:rgba(255,255,255,0.7); font-size:14px;">Based on your responses to 30 questions.</p>
+        <div class="trait-tags">
             {% for word in analyzed_text.split() %}
             {% if word|length > 4 %}<span class="tag">{{ word }}</span>{% endif %}
             {% endfor %}
         </div>
-        <p style="margin-top: 15px;"><a href="/" style="color: white; font-weight: bold; text-decoration: underline;">Retake the test</a></p>
+        <a href="/" class="retake-link">Retake the Test</a>
     </div>
     {% endif %}
 
-    <div class="container">
-        <h2>MBTI Personality Test</h2>
-        <p class="intro-text">Slide to indicate how much you agree with each statement.</p>
+    <!-- Progress bar -->
+    <div class="progress-wrap">
+        <div class="progress-info">
+            <span>Progress</span>
+            <span id="progressText">0 / 30</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+    </div>
 
+    <div class="form-card">
         <form action="/predict" method="post" id="mbtiForm">
             {% set questions = [
             "I feel energized after spending time with new people.", "I prefer small gatherings over large parties.",
@@ -230,37 +394,54 @@
 
             {% for q_text in questions %}
             <div class="question-block">
-                <p class="question-text">{{ loop.index }}. {{ q_text }}</p>
+                <div class="question-number">Question {{ loop.index }} of 30</div>
+                <p class="question-text">{{ q_text }}</p>
                 <div class="slider-container">
-                    <span id="label_q{{ loop.index }}" class="current-selection">Neutral</span>
-                    <input type="range" min="1" max="4" value="1" class="mbti-slider" oninput="updateUI('q{{ loop.index }}', this.value)">
+                    <span id="label_q{{ loop.index }}" class="current-badge">Neutral</span><br>
+                    <input type="range" min="1" max="4" value="2" class="mbti-slider"
+                           oninput="updateUI('q{{ loop.index }}', this.value); updateProgress()">
                     <div class="slider-labels"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
                     <input type="hidden" name="q{{ loop.index }}" id="q{{ loop.index }}" value="">
                 </div>
             </div>
             {% endfor %}
 
-            <button type="submit">Analyze Results</button>
+            <button type="submit" class="submit-btn">Analyze My Personality &rarr;</button>
         </form>
     </div>
 
     <script>
         const mappings = {
-            "q1": ["introvert", "introvert", "extrovert", "extrovert"], "q2": ["extrovert", "extrovert", "introvert", "introvert"],
-            "q3": ["introvert", "introvert", "extrovert", "extrovert"], "q4": ["extrovert", "extrovert", "introvert", "introvert"],
-            "q5": ["introvert", "introvert", "extrovert", "extrovert"], "q6": ["extrovert", "extrovert", "introvert", "introvert"],
-            "q7": ["sensing", "sensing", "intuition", "intuition"], "q8": ["sensing", "sensing", "intuition", "intuition"],
-            "q9": ["intuition", "intuition", "sensing", "sensing"], "q10": ["sensing", "sensing", "intuition", "intuition"],
-            "q11": ["intuition", "intuition", "sensing", "sensing"], "q12": ["sensing", "sensing", "intuition", "intuition"],
-            "q13": ["feeling", "feeling", "thinking", "thinking"], "q14": ["thinking", "thinking", "feeling", "feeling"],
-            "q15": ["feeling", "feeling", "thinking", "thinking"], "q16": ["thinking", "thinking", "feeling", "feeling"],
-            "q17": ["feeling", "feeling", "thinking", "thinking"], "q18": ["thinking", "thinking", "feeling", "feeling"],
-            "q19": ["perceiving", "perceiving", "judging", "judging"], "q20": ["judging", "judging", "perceiving", "perceiving"],
-            "q21": ["judging", "judging", "perceiving", "perceiving"], "q22": ["perceiving", "perceiving", "judging", "judging"],
-            "q23": ["judging", "judging", "perceiving", "perceiving"], "q24": ["perceiving", "perceiving", "judging", "judging"],
-            "q25": ["assertive", "assertive", "turbulent", "turbulent"], "q26": ["turbulent", "turbulent", "assertive", "assertive"],
-            "q27": ["assertive", "assertive", "turbulent", "turbulent"], "q28": ["assertive", "assertive", "turbulent", "turbulent"],
-            "q29": ["turbulent", "turbulent", "assertive", "assertive"], "q30": ["assertive", "assertive", "turbulent", "turbulent"]
+            "q1":  ["introvert","introvert","extrovert","extrovert"],
+            "q2":  ["extrovert","extrovert","introvert","introvert"],
+            "q3":  ["introvert","introvert","extrovert","extrovert"],
+            "q4":  ["extrovert","extrovert","introvert","introvert"],
+            "q5":  ["introvert","introvert","extrovert","extrovert"],
+            "q6":  ["extrovert","extrovert","introvert","introvert"],
+            "q7":  ["sensing","sensing","intuition","intuition"],
+            "q8":  ["sensing","sensing","intuition","intuition"],
+            "q9":  ["intuition","intuition","sensing","sensing"],
+            "q10": ["sensing","sensing","intuition","intuition"],
+            "q11": ["intuition","intuition","sensing","sensing"],
+            "q12": ["sensing","sensing","intuition","intuition"],
+            "q13": ["feeling","feeling","thinking","thinking"],
+            "q14": ["thinking","thinking","feeling","feeling"],
+            "q15": ["feeling","feeling","thinking","thinking"],
+            "q16": ["thinking","thinking","feeling","feeling"],
+            "q17": ["feeling","feeling","thinking","thinking"],
+            "q18": ["thinking","thinking","feeling","feeling"],
+            "q19": ["perceiving","perceiving","judging","judging"],
+            "q20": ["judging","judging","perceiving","perceiving"],
+            "q21": ["judging","judging","perceiving","perceiving"],
+            "q22": ["perceiving","perceiving","judging","judging"],
+            "q23": ["judging","judging","perceiving","perceiving"],
+            "q24": ["perceiving","perceiving","judging","judging"],
+            "q25": ["assertive","assertive","turbulent","turbulent"],
+            "q26": ["turbulent","turbulent","assertive","assertive"],
+            "q27": ["assertive","assertive","turbulent","turbulent"],
+            "q28": ["assertive","assertive","turbulent","turbulent"],
+            "q29": ["turbulent","turbulent","assertive","assertive"],
+            "q30": ["assertive","assertive","turbulent","turbulent"]
         };
 
         const textLabels = ["Strongly Disagree", "Disagree", "Agree", "Strongly Agree"];
@@ -270,8 +451,17 @@
             document.getElementById('label_' + qId).innerText = textLabels[val - 1];
         }
 
+        function updateProgress() {
+            const sliders = document.querySelectorAll('.mbti-slider');
+            const answered = [...sliders].filter(s => s.value !== "").length;
+            const pct = Math.round((answered / sliders.length) * 100);
+            document.getElementById('progressFill').style.width = pct + '%';
+            document.getElementById('progressText').innerText = answered + ' / ' + sliders.length;
+        }
+
         window.onload = function () {
             for (let i = 1; i <= 30; i++) { updateUI('q' + i, 2); }
+            updateProgress();
         };
     </script>
 </body>
