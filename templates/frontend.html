@@ -185,6 +185,41 @@
             color: #fff;
         }
 
+        /* ── Confidence Bar ── */
+        .confidence-wrap {
+            margin: 18px auto 6px;
+            max-width: 360px;
+            text-align: left;
+        }
+
+        .confidence-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.65);
+            margin-bottom: 7px;
+        }
+
+        .confidence-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .confidence-bar-fill {
+            height: 100%;
+            border-radius: 100px;
+            background: rgba(255,255,255,0.9);
+            width: 0%;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+
         /* ── Form Card ── */
         .form-card {
             background: rgba(255,255,255,0.04);
@@ -321,7 +356,16 @@
     <div class="result-card">
         <p class="label">Your Predicted Type</p>
         <p class="mbti-code">{{ prediction }}</p>
-        <p style="color:rgba(255,255,255,0.7); font-size:14px;">Based on your responses to 30 questions.</p>
+        <div class="confidence-wrap">
+            <div class="confidence-label">
+                <span>Confidence</span>
+                <span id="confPct">{{ confidence_pct }}%</span>
+            </div>
+            <div class="confidence-bar-bg">
+                <div class="confidence-bar-fill" id="confBar"></div>
+            </div>
+        </div>
+        <p style="color:rgba(255,255,255,0.7); font-size:14px; margin-top:14px;">Based on your responses to 30 questions.</p>
         <div class="trait-tags">
             {% for word in analyzed_text.split() %}
             {% if word|length > 4 %}<span class="tag">{{ word }}</span>{% endif %}
